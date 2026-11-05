@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pizzeriro QR</title>
+<style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;color:#141110;font-family:system-ui,-apple-system,sans-serif;text-align:center}
+.poster{width:100%;max-width:560px;padding:32px 24px;border:6px solid #e0974a;border-radius:24px;margin:16px}
+h1{margin:0;font-size:2.6rem;color:#e0974a;letter-spacing:2px}
+.sub{margin:6px 0 24px;color:#555;font-size:1.1rem}
+#qr{display:inline-block;padding:14px;border:2px solid #141110;border-radius:16px}
+#qr img,#qr canvas{display:block;max-width:100%;height:auto}
+.scan{margin:24px 0 4px;font-size:1.6rem;font-weight:700}
+.scan2{margin:0;color:#555}
+small{display:block;margin-top:14px;color:#777;word-break:break-all}
+button{margin:0 0 16px;padding:12px 24px;font-size:1rem;border:0;border-radius:10px;background:#e0974a;color:#000;font-weight:700}
+@media print{button{display:none}.poster{margin:0 auto;border-width:8px}body{min-height:auto}}
+</style>
+</head>
+<body>
+<div>
+<button onclick="window.print()">🖨️ Imprimer</button>
+<div class="poster">
+<h1>🍕 PIZZERIRO</h1>
+<p class="sub">Pizzeria · Tacos · Sandwichs · Crêpes</p>
+<div id="qr"></div>
+<p class="scan">Scannez pour voir le menu</p>
+<p class="scan2">Scan to see the menu · امسح لعرض القائمة</p>
+<small id="link"></small>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+var url=new URL('./',location.href).href;
+document.getElementById('link').textContent=url;
+new QRCode(document.getElementById('qr'),{text:url,width:300,height:300,correctLevel:QRCode.CorrectLevel.H});
+</script>
+</body>
+</html>
