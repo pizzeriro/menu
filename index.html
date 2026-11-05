@@ -1,16 +1,83 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>موقعي</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; text-align: center; }
-    h1 { color: #2a6df4; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pizzeriro | Menu</title>
+<style>
+:root{--bg:#141110;--card:#1e1a17;--line:#3a2f26;--fg:#f4ece3;--muted:#a89b8d;--gold:#e0974a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
+header{text-align:center;padding:28px 16px 18px;border-bottom:2px solid var(--gold)}
+header h1{margin:0;font-size:1.9rem;color:var(--gold);letter-spacing:1px}
+header p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line)}
+nav a{white-space:nowrap;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:.88rem}
+nav a:active{background:var(--gold);color:#000}
+main{max-width:640px;margin:0 auto;padding:0 16px 40px}
+section{scroll-margin-top:58px}
+h2{color:var(--gold);margin:28px 0 4px;font-size:1.3rem;text-transform:uppercase;letter-spacing:1px}
+h3{color:var(--muted);margin:14px 0 4px;font-size:.85rem;text-transform:uppercase;letter-spacing:1px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 14px}
+.row{display:flex;align-items:baseline;gap:8px;padding:10px 0;border-bottom:1px dotted var(--line)}
+.row:last-child{border-bottom:0}
+.name{flex:0 1 auto}
+.dots{flex:1}
+.price{font-weight:700;color:var(--gold);white-space:nowrap}
+@media print{:root{--bg:#fff;--card:#fff;--line:#bbb;--fg:#111;--muted:#555;--gold:#b86a1a}nav{display:none}body{-webkit-print-color-adjust:exact}section{break-inside:avoid}}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}
+</style>
 </head>
 <body>
-  <h1>مرحبًا!</h1>
-  <p>تم الوصول إلى هذا الموقع عبر مسح رمز QR.</p>
+<header>
+<h1>🍕 PIZZERIRO</h1>
+<p>Pizzeria · Tacos · Sandwichs · Crêpes</p>
+</header>
+<nav id="nav"></nav>
+<main id="menu"></main>
+<footer>Prix en dirhams (Dh)</footer>
+
+<script>
+/* EDIT PRICES HERE. Write the price as a number, e.g. 25. Leave "" for no price. */
+const MENU = [
+ {id:"pizza", title:"Pizza", items:[
+  ["Thon",""],["Viande hachée",""],["Poulet",""],["Margherita",""],["Quatre fromages",""],
+  ["Anchois",""],["Pepperoni",""],["Orientale",""],["Quatre saisons",""],["Royale",""],
+  ["Végétarienne",""],["Fruits de mer",""],["Jambon",""],["Calzone",""]]},
+ {id:"pasticcio", title:"Pasticcio", items:[["Poulet",""],["Viande hachée",""],["Mixte",""]]},
+ {id:"tacos", title:"Tacos", groups:[
+  {title:"Normal", items:[["Viande hachée",""],["Nuggets",""],["Royal",""],["Poulet",""],["Mix",""]]},
+  {title:"Gratiné", items:[["Viande hachée",""],["Nuggets",""],["Royal",""],["Poulet",""],["Mix",""]]}]},
+ {id:"sandwich", title:"Sandwich", items:[["Viande hachée",""],["Poulet",""],["Mix",""],["Nuggets",""],["Steak de viande",""]]},
+ {id:"burger", title:"Burger", items:[["Viande hachée",""],["Crispy",""]]},
+ {id:"panini-roll", title:"Panini Roll", items:[["Viande hachée",""],["Poulet",""],["Mix",""],["Nuggets",""]]},
+ {id:"panini", title:"Panini", items:[["Viande hachée",""],["Nuggets",""],["Mixte",""],["Thon",""],["Poulet",""]]},
+ {id:"box", title:"Box Crispy", items:[["Nuggets",""],["Cordon bleu",""],["Crispy",""],["Royal",""]]},
+ {id:"wraps", title:"Wraps", items:[["Poulet",""],["Viande hachée",""],["Mix",""],["Nuggets",""]]},
+ {id:"crepes", title:"Les Crêpes", items:[["Crêpe banane",20],["Crêpe chocolat",18],["Crêpe Nutella",20],["Crêpe Kit Kat",25],["Crêpe mix",""]]},
+ {id:"jus", title:"Jus", items:[["Orange",12],["Avocat",13],["Mangue",18],["Ananas",17],["Fraise",12],["Citron",8],["Banane",10],["Avocat fruits secs",18],["Panaché",13],["Grenade",10]]},
+ {id:"milkshake", title:"Milkshake", items:[["Milkshake Oreo",20],["Milkshake Kit Kat",17],["Milkshake fraise",17],["Milkshake mix",20],["Milkshake banane",17]]},
+ {id:"mojitos", title:"Mojitos", items:[["Mojito classique",""],["Mojito myrtille",""],["Mojito mangue",""],["Mojito fraise",""],["Mojito dragon",""],["Mojito ananas",""]]},
+ {id:"boisson", title:"Boissons", items:[["Canette",7],["Oulmès",7],["Eau",3]]},
+ {id:"dessert", title:"Desserts", items:[["Mahlabia",""],["Tiramisu",""],["Panna cotta",""],["Raïb fruits secs",""],["Flan",""],["Fruit orange",""],["Za3za3",""],["Cheesecake",""],["Crema catalana",""]]}
+];
+
+function rows(items){
+  return '<div class="list">'+items.map(function(i){
+    var p=i[1]===""?"":i[1]+" Dh";
+    return '<div class="row"><span class="name">'+i[0]+'</span><span class="dots"></span><span class="price">'+p+'</span></div>';
+  }).join("")+'</div>';
+}
+var html="",nav="";
+MENU.forEach(function(c){
+  nav+='<a href="#'+c.id+'">'+c.title+'</a>';
+  html+='<section id="'+c.id+'"><h2>'+c.title+'</h2>';
+  if(c.groups){c.groups.forEach(function(g){html+='<h3>'+g.title+'</h3>'+rows(g.items);});}
+  else{html+=rows(c.items);}
+  html+='</section>';
+});
+document.getElementById("nav").innerHTML=nav;
+document.getElementById("menu").innerHTML=html;
+</script>
 </body>
 </html>
