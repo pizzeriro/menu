@@ -3,73 +3,94 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pizzeriro | Menu</title>
+<title>Romaissae Pizzeria | Menu</title>
 <style>
-:root{--bg:#141110;--card:#1e1a17;--line:#3a2f26;--fg:#f4ece3;--muted:#a89b8d;--gold:#e0974a}
+:root{--bg:#141110;--card:#1e1a17;--line:#3a2f26;--fg:#f4ece3;--muted:#a89b8d;--gold:#f08a2c}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
-header{text-align:center;padding:28px 16px 18px;border-bottom:2px solid var(--gold)}
-header h1{margin:0;font-size:1.9rem;color:var(--gold);letter-spacing:1px}
-header p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+header{text-align:center;padding:26px 16px 16px;border-bottom:2px solid var(--gold)}
+header h1{margin:0;font-size:2.1rem;color:var(--gold);letter-spacing:2px}
+header .pz{margin:2px 0 0;color:var(--fg);letter-spacing:6px;font-size:.85rem}
+.deliv{max-width:640px;margin:14px auto 0;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:.92rem}
+.deliv b{color:var(--gold);letter-spacing:1px}
+.deliv a{display:inline-block;margin:6px 6px 0;padding:8px 14px;border-radius:999px;background:var(--gold);color:#000;font-weight:700;text-decoration:none}
+.deliv p{margin:8px 0 0;color:var(--muted)}
 nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line)}
 nav a{white-space:nowrap;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:.88rem}
-main{max-width:640px;margin:0 auto;padding:0 16px 40px}
+main{max-width:640px;margin:0 auto;padding:0 16px 30px}
 section{scroll-margin-top:58px}
 h2{color:var(--gold);margin:28px 0 4px;font-size:1.3rem;text-transform:uppercase;letter-spacing:1px}
 h3{color:var(--muted);margin:14px 0 4px;font-size:.85rem;text-transform:uppercase;letter-spacing:1px}
 .list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 14px}
 .row{display:flex;align-items:baseline;gap:8px;padding:10px 0;border-bottom:1px dotted var(--line)}
 .row:last-child{border-bottom:0}
+.row.head{padding:8px 0 2px;border-bottom:0;color:var(--muted);font-size:.75rem;font-weight:700}
 .dots{flex:1}
-.price{font-weight:700;color:var(--gold);white-space:nowrap}
-footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}
+.price{font-weight:700;color:var(--gold);white-space:nowrap;min-width:58px;text-align:right}
+.head .price{color:var(--muted)}
+.note{margin:6px 2px 0;color:var(--gold);font-size:.85rem;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px 16px 30px}
+@media print{:root{--bg:#fff;--card:#fff;--line:#bbb;--fg:#111;--muted:#555;--gold:#b86a1a}nav,.deliv a{display:none}body{-webkit-print-color-adjust:exact}section{break-inside:avoid}}
 </style>
 </head>
 <body>
 <header>
-<h1>🍕 PIZZERIRO</h1>
-<p>Pizzeria · Tacos · Sandwichs · Crêpes</p>
+<h1>ROMAISSAE</h1>
+<p class="pz">PIZZERIA</p>
+<div class="deliv">
+<b>LIVRAISON DISPONIBLE</b><br>
+<a href="tel:0687259513">📞 06 87 25 95 13</a><a href="tel:0668999865">📞 06 68 99 98 65</a>
+<p>📍 Rue du Barrage, Hadada, Oued-Zem</p>
+</div>
 </header>
 <nav id="nav"></nav>
 <main id="menu"></main>
-<footer>Prix en dirhams (Dh)</footer>
+<footer>Prix en dirhams (Dh)<br>Romaissae Pizzeria · Rue du Barrage, Hadada, Oued-Zem</footer>
 
 <script>
+/* items: [name, price] or [name, price1, price2]. "" = no price. */
 const MENU = [
- {id:"pizza", title:"Pizza", items:[
-  ["Thon",""],["Viande hachée",""],["Poulet",""],["Margherita",""],["Quatre fromages",""],
-  ["Anchois",""],["Pepperoni",""],["Orientale",""],["Quatre saisons",""],["Royale",""],
-  ["Végétarienne",""],["Fruits de mer",""],["Jambon",""],["Calzone",""]]},
- {id:"pasticcio", title:"Pasticcio", items:[["Poulet",""],["Viande hachée",""],["Mixte",""]]},
+ {id:"pizza", title:"Pizza", cols:["M","G"], items:[
+  ["Thon",30,50],["Viande hachée",33,55],["Poulet",30,50],["Margherita",25,45],["Quatre fromages",30,50],
+  ["Anchois",30,55],["Pepperoni",33,55],["Orientale",32,55],["Quatre saisons",40,65],["Royale",40,65],
+  ["Végétarienne",28,50],["Fruits de mer",40,60],["Jambon",27,50],["Colazon",30,50]]},
+ {id:"pasticcio", title:"Pasticcio", items:[["Poulet",30],["Viande hachée",30],["Mixte",32]]},
  {id:"tacos", title:"Tacos", groups:[
-  {title:"Normal", items:[["Viande hachée",""],["Nuggets",""],["Royal",""],["Poulet",""],["Mix",""]]},
-  {title:"Gratiné", items:[["Viande hachée",""],["Nuggets",""],["Royal",""],["Poulet",""],["Mix",""]]}]},
- {id:"sandwich", title:"Sandwich", items:[["Viande hachée",""],["Poulet",""],["Mix",""],["Nuggets",""],["Steak de viande",""]]},
- {id:"burger", title:"Burger", items:[["Viande hachée",""],["Crispy",""]]},
- {id:"panini-roll", title:"Panini Roll", items:[["Viande hachée",""],["Poulet",""],["Mix",""],["Nuggets",""]]},
- {id:"panini", title:"Panini", items:[["Viande hachée",""],["Nuggets",""],["Mixte",""],["Thon",""],["Poulet",""]]},
- {id:"box", title:"Box Crispy", items:[["Nuggets",""],["Cordon bleu",""],["Crispy",""],["Royal",""]]},
- {id:"wraps", title:"Wraps", items:[["Poulet",""],["Viande hachée",""],["Mix",""],["Nuggets",""]]},
- {id:"crepes", title:"Les Crêpes", items:[["Crêpe banane",20],["Crêpe chocolat",18],["Crêpe Nutella",20],["Crêpe Kit Kat",25],["Crêpe mix",""]]},
- {id:"jus", title:"Jus", items:[["Orange",12],["Avocat",13],["Mangue",18],["Ananas",17],["Fraise",12],["Citron",8],["Banane",10],["Avocat fruits secs",18],["Panaché",13],["Grenade",10]]},
- {id:"milkshake", title:"Milkshake", items:[["Milkshake Oreo",20],["Milkshake Kit Kat",17],["Milkshake fraise",17],["Milkshake mix",20],["Milkshake banane",17]]},
- {id:"mojitos", title:"Mojitos", items:[["Mojito classique",""],["Mojito myrtille",""],["Mojito mangue",""],["Mojito fraise",""],["Mojito dragon",""],["Mojito ananas",""]]},
+  {title:"Normal", cols:["","XL"], items:[["Viande hachée",35,""],["Nuggets",35,50],["Royal",40,58],["Poulet",35,50],["Mix",37,55]]},
+  {title:"Gratiné", cols:["","XL"], items:[["Viande hachée",40,55],["Nuggets",40,55],["Royal",40,60],["Poulet","",""],["Mix","",""]]}]},
+ {id:"sandwich", title:"Sandwich", cols:["","XL"], items:[["Viande hachée",25,35],["Poulet",25,35],["Mix",27,40],["Nuggets",25,38],["Steak de viande",30,40]]},
+ {id:"burger", title:"Burger", items:[["Viande hachée",27],["Crispy",25]]},
+ {id:"panini3ich", title:"Panini 3ich", items:[["Viande hachée",25],["Poulet",22],["Mix",25],["Nuggets",23]]},
+ {id:"panini", title:"Panini", items:[["Viande hachée",20],["Nuggets",20],["Mixte",20],["Thon",15],["Poulet",18]]},
+ {id:"box", title:"Box Crispy", items:[["Nuggets",25],["Cordon bleu",27],["Crispy",28],["Royal",30]]},
+ {id:"wraps", title:"Wraps", note:"Gratiné + 3 Dh", items:[["Poulet",25],["Viande hachée",22],["Mix",25],["Nuggets",23]]},
+ {id:"salade", title:"Salade", items:[["Variée",23]]},
+ {id:"crepes", title:"Les Crêpes", items:[["Crêpe banane",20],["Crêpe chocolat",18],["Crêpe Nutella",20],["Crêpe Kit Kat",23],["Crêpe mix (fruits secs + Oreo + Kit Kat)",25]]},
+ {id:"jus", title:"Jus", items:[["Orange",12],["Avocat",13],["Mangue",15],["Ananas",17],["Fraise",12],["Citron",8],["Banane",10],["Avocat fruits secs",18],["Panaché",13],["Grenade",10]]},
  {id:"boisson", title:"Boissons", items:[["Canette",7],["Oulmès",7],["Eau",3]]},
- {id:"dessert", title:"Desserts", items:[["Mahlabia",""],["Tiramisu",""],["Panna cotta",""],["Raïb fruits secs",""],["Flan",""],["Fruit orange",""],["Za3za3",""],["Cheesecake",""],["Crema catalana",""]]}
+ {id:"milkshake", title:"Milkshake", items:[["Milkshake Oreo",20],["Milkshake Kit Kat",17],["Milkshake fraise",17],["Milkshake mix",20],["Milkshake banane",17]]},
+ {id:"mojitos", title:"Mojitos", items:[["Mojito classique",15],["Mojito myrtille",17],["Mojito mangue",17],["Mojito fraise",17],["Mojito dragon",17],["Mojito ananas",17]]},
+ {id:"dessert", title:"Desserts", items:[["Mahlabia",10],["Tiramisu",13],["Panna cotta",12],["Raïb fruits secs",""],["Flan",""],["Fruit orange",13],["Za3za3",25],["Cheesecake",18],["Crema catalana",7]]}
 ];
 
-function rows(items){
-  return '<div class="list">'+items.map(function(i){
-    var p=i[1]===""?"":i[1]+" Dh";
-    return '<div class="row"><span>'+i[0]+'</span><span class="dots"></span><span class="price">'+p+'</span></div>';
+function money(v){return v===""||v===undefined?"":v+" Dh";}
+function rows(items,cols){
+  var h="";
+  if(cols&&cols.join("")!==""){
+    h+='<div class="row head"><span>&nbsp;</span><span class="dots"></span>'+cols.map(function(c){return '<span class="price">'+c+'</span>';}).join("")+'</div>';
+  }
+  return '<div class="list">'+h+items.map(function(i){
+    var p=i.slice(1).map(function(v){return '<span class="price">'+money(v)+'</span>';}).join("");
+    return '<div class="row"><span>'+i[0]+'</span><span class="dots"></span>'+p+'</div>';
   }).join("")+'</div>';
 }
 var html="",nav="";
 MENU.forEach(function(c){
   nav+='<a href="#'+c.id+'">'+c.title+'</a>';
   html+='<section id="'+c.id+'"><h2>'+c.title+'</h2>';
-  if(c.groups){c.groups.forEach(function(g){html+='<h3>'+g.title+'</h3>'+rows(g.items);});}
-  else{html+=rows(c.items);}
+  if(c.groups){c.groups.forEach(function(g){html+='<h3>'+g.title+'</h3>'+rows(g.items,g.cols);});}
+  else{html+=rows(c.items,c.cols);}
+  if(c.note){html+='<p class="note">'+c.note+'</p>';}
   html+='</section>';
 });
 document.getElementById("nav").innerHTML=nav;
