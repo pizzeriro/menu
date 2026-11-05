@@ -13,7 +13,6 @@ header h1{margin:0;font-size:1.9rem;color:var(--gold);letter-spacing:1px}
 header p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
 nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line)}
 nav a{white-space:nowrap;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:.88rem}
-nav a:active{background:var(--gold);color:#000}
 main{max-width:640px;margin:0 auto;padding:0 16px 40px}
 section{scroll-margin-top:58px}
 h2{color:var(--gold);margin:28px 0 4px;font-size:1.3rem;text-transform:uppercase;letter-spacing:1px}
@@ -21,10 +20,8 @@ h3{color:var(--muted);margin:14px 0 4px;font-size:.85rem;text-transform:uppercas
 .list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 14px}
 .row{display:flex;align-items:baseline;gap:8px;padding:10px 0;border-bottom:1px dotted var(--line)}
 .row:last-child{border-bottom:0}
-.name{flex:0 1 auto}
 .dots{flex:1}
 .price{font-weight:700;color:var(--gold);white-space:nowrap}
-@media print{:root{--bg:#fff;--card:#fff;--line:#bbb;--fg:#111;--muted:#555;--gold:#b86a1a}nav{display:none}body{-webkit-print-color-adjust:exact}section{break-inside:avoid}}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}
 </style>
 </head>
@@ -38,7 +35,6 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}
 <footer>Prix en dirhams (Dh)</footer>
 
 <script>
-/* EDIT PRICES HERE. Write the price as a number, e.g. 25. Leave "" for no price. */
 const MENU = [
  {id:"pizza", title:"Pizza", items:[
   ["Thon",""],["Viande hachée",""],["Poulet",""],["Margherita",""],["Quatre fromages",""],
@@ -65,7 +61,7 @@ const MENU = [
 function rows(items){
   return '<div class="list">'+items.map(function(i){
     var p=i[1]===""?"":i[1]+" Dh";
-    return '<div class="row"><span class="name">'+i[0]+'</span><span class="dots"></span><span class="price">'+p+'</span></div>';
+    return '<div class="row"><span>'+i[0]+'</span><span class="dots"></span><span class="price">'+p+'</span></div>';
   }).join("")+'</div>';
 }
 var html="",nav="";
